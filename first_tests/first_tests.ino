@@ -58,7 +58,6 @@ void loop() {
     NodeMCU_Server::server_listen();
 
     MQTT_Publisher::loop();
-    MQTT_Publisher::publish_temp(0, 22);
 
     delay(500);
 }
