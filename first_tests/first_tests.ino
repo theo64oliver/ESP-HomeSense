@@ -51,13 +51,13 @@ void setup() {
 }
 
 void loop() {
+    MQTT_Publisher::loop();
+
     Button::button_main();
     HumTempSensor::hum_temp_sensor_main();
     Light_Sensor::lum_sensor_main();
 
     NodeMCU_Server::server_listen();
-
-    MQTT_Publisher::loop();
 
     delay(500);
 }
