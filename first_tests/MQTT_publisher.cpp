@@ -6,6 +6,8 @@
 #include "config.h"
 #include "wifi.h"
 #include "hum_temp_sensor.h"
+#include "light_sensor.h"
+
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -53,18 +55,25 @@ void MQTT_Publisher::publish_temp(int id, int temp_value) {
 
   String topic = String("esp12/" + Wifi::get_ip() + "/TEMPERATURE/" + String(id, DEC));
   String message = HumTempSensor::create_dto_temp(id, String(temp_value, DEC));
-  bool tmp = client.publish(topic.c_str(), message.c_str());
+  bool pub_res = client.publish(topic.c_str(), message.c_str());
 
-  debug.printf("Published to %s, response code %d\n", topic, tmp);
+  debug.printf("Published to %s, response code %d\n", topic, pub_res);
 }
 
 void MQTT_Publisher::publish_hum(int id, int hum_value) {
 
   String topic = String("esp12/" + Wifi::get_ip() + "/HUMIDITY/" + String(id, DEC));
   String message = HumTempSensor::create_dto_hum(id, String(hum_value, DEC));
-  bool tmp = client.publish(topic.c_str(), message.c_str());
+  bool pub_res = client.publish(topic.c_str(), message.c_str());
 
-  debug.printf("Published to %s, response code %d\n", topic, tmp);
+  debug.printf("Published to %s, response code %d\n", topic, pub_res);
 }
 
-// void MQTT_Publisher::publish_light() {}
+void MQTT_Publisher::publish_lum(int id, int lum_value) {
+
+  String topic = String("esp12/" + Wifi::get_ip() + "/LUMINOSITY/" + String(id, DEC));
+  String message = Light_Sensor::create_dto(id, String(lum_value, DEC));
+  bool pub_res = client.publish(topic.c_str(), message.c_str());
+
+  debug.printf("Published to %s, response code %d\n", topic, pub_res);
+}
