@@ -29,6 +29,10 @@ void Light_Sensor::lum_sensor_main() {
     MQTT_Publisher::publish_lum(0, lum_val);
 }
 
+String Light_Sensor::register_component(int id) {
+    return Component_DTO::create(ComponentType::e_Sunlight, id, "0", "LumSensor");
+}
+
 String Light_Sensor::create_dto(int id, String value) {
     return Component_DTO::create(ComponentType::e_Sunlight, id, value, "LumSensor");
 }

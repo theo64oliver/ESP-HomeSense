@@ -6,6 +6,7 @@
 namespace Light_Sensor {
   void setup();
   void lum_sensor_main();
+  String register_component(int id);
   String create_dto(int id, String value);
 }
 
