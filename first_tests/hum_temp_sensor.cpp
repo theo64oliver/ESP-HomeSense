@@ -83,8 +83,8 @@ void HumTempSensor::hum_temp_sensor_main() {
         debug.printf("Temperature: %.1f °C, Humidity: %.1f %%\n", temp_hum_val[1], temp_hum_val[0]);
     
         // Publish to MQTT broker
-        MQTT_Publisher::publish_temp(0, temp_hum_val[1]);
-        MQTT_Publisher::publish_hum(0, temp_hum_val[0]);
+        MQTT_Publisher::publish_temp(0, temp_hum_val[1], Component_DTO::create_id(0, "TempSensor"));
+        MQTT_Publisher::publish_hum(0, temp_hum_val[0], Component_DTO::create_id(0, "HumSensor"));
     }
     else {
         debug.println("Failed to get temprature and humidity value.");

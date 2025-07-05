@@ -51,18 +51,18 @@ void MQTT_Publisher::loop() {
   // You can now publish messages
 }
 
-void MQTT_Publisher::publish_temp(int id, int temp_value) {
+void MQTT_Publisher::publish_temp(int id, int temp_value, String id_final) {
 
-  String topic = String("esp12/" + Wifi::get_ip() + "/TEMPERATURE/" + String(id, DEC));
+  String topic = String("esp12/" + Wifi::get_ip() + "/TEMPERATURE/" + id_final);
   String message = HumTempSensor::create_dto_temp(id, String(temp_value, DEC));
   bool pub_res = client.publish(topic.c_str(), message.c_str());
 
   debug.printf("Published to %s, response code %d\n", topic, pub_res);
 }
 
-void MQTT_Publisher::publish_hum(int id, int hum_value) {
+void MQTT_Publisher::publish_hum(int id, int hum_value, String id_final) {
 
-  String topic = String("esp12/" + Wifi::get_ip() + "/HUMIDITY/" + String(id, DEC));
+  String topic = String("esp12/" + Wifi::get_ip() + "/HUMIDITY/" + id_final);
   String message = HumTempSensor::create_dto_hum(id, String(hum_value, DEC));
   bool pub_res = client.publish(topic.c_str(), message.c_str());
 
