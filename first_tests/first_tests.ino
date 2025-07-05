@@ -47,7 +47,7 @@ void setup() {
     NodeMCU_Client::send_post(BACKEND_CREATE_URI, HumTempSensor::register_component_hum(0));
 
     // Register light sensor
-    // NodeMCU_Client::send_post("http://172.20.10.4:8080/ssse/sensor/create", LightSensor::register_component(0));
+    NodeMCU_Client::send_post(BACKEND_CREATE_URI, Light_Sensor::register_component(0));
 }
 
 void loop() {
