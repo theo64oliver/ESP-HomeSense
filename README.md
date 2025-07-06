@@ -1,4 +1,4 @@
-# Step 1: How to use all devices
+# ESP side: How to use it
 
 ## Board architecture:
 - ESP8266
@@ -8,8 +8,6 @@
 - Grove - 16x2 LCD
 - Grove - Light Sensor
 - Grove - Button
-
-(TODO add refs!!!!!!!!!!!)
 
 ## Work Done:
 
@@ -24,7 +22,7 @@ For this third part, here is how the system should behave:
   - Change the threshold for the luminosity sensor.
   - Change the threshold for the humidity sensor.
 
-(TODO how do we handle the current sensor values)
+The ESP will communicate with the backend via MQTT and HTTP depending on the use (frequent communication -> MQTT, non frequent -> HTTP)
 
 All of those endpoints are implemented to handle more devices in the future. They all have identifiers to distinguish between different devices. (For the moment limited to one device of each type quoted above)
 
@@ -34,8 +32,9 @@ All of those endpoints are implemented to handle more devices in the future. The
 - `/humidity_threshold/{value}` : Changes the threshold for the humidity sensor.
 - `/luminosity_threshold/{value}` : Changes the threshold for the luminosity sensor.
 
-## MQTT subscription:
-(TODO pub subs)
+## MQTT publications:
+The esp8266 is publishing to topics (`esp12/+/+/+`). The luminosity, humidity and temperature sensors are publishing to different topics.
+(using the `PubSubClient` library)
 
 ## Remarks:
 Two alternatives were proposed for the implementation of a server on the ESP8266:
@@ -69,4 +68,6 @@ After this comparison, we decided to use the second library (ESP8266WebServer) f
 - Temperature and humidity sensor: https://wiki.seeedstudio.com/GroveTemperatureAndHumidity_Sensor
 - LED : https://wiki.seeedstudio.com/Grove-Chainable_RGB_LED/
 - LCD : https://wiki.seeedstudio.com/Grove-16x2_LCD_Series
-- Capteur de luminosité : veuillez télécharger la bibliothèque disponible sur moodle (TODO change)
+- Luminosity sensor : please download the library available on moodle
+- PubSubClient : Available on the arduino ide library manager
+- 
