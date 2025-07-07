@@ -7,6 +7,7 @@
 #include "wifi.h"
 #include "hum_temp_sensor.h"
 #include "light_sensor.h"
+#include "button.h"
 
 
 WiFiClient espClient;
@@ -51,10 +52,12 @@ void MQTT_Publisher::loop() {
   // You can now publish messages
 }
 
-void MQTT_Publisher::publish_temp(int id, int temp_value, String id_final) {
+void MQTT_Publisher::publish_temp(int id, float temp_value, String id_final) {
 
   String topic = String("esp12/" + Wifi::get_ip() + "/TEMPERATURE/" + id_final);
-  String message = HumTempSensor::create_dto_temp(id, String(temp_value, DEC));
+  String message = HumTempSensor::create_MQTT_temp(id, String(temp_value, 2));
+
+  debug.printf("Message: %s\n", message);
   bool pub_res = client.publish(topic.c_str(), message.c_str());
 
   debug.printf("Published to %s, response code %d\n", topic, pub_res);
@@ -63,7 +66,7 @@ void MQTT_Publisher::publish_temp(int id, int temp_value, String id_final) {
 void MQTT_Publisher::publish_hum(int id, int hum_value, String id_final) {
 
   String topic = String("esp12/" + Wifi::get_ip() + "/HUMIDITY/" + id_final);
-  String message = HumTempSensor::create_dto_hum(id, String(hum_value, DEC));
+  String message = HumTempSensor::create_MQTT_hum(id, String(hum_value));
   bool pub_res = client.publish(topic.c_str(), message.c_str());
 
   debug.printf("Published to %s, response code %d\n", topic, pub_res);
@@ -71,8 +74,17 @@ void MQTT_Publisher::publish_hum(int id, int hum_value, String id_final) {
 
 void MQTT_Publisher::publish_lum(int id, int lum_value) {
 
-  String topic = String("esp12/" + Wifi::get_ip() + "/LUMINOSITY/" + String(id, DEC));
-  String message = Light_Sensor::create_dto(id, String(lum_value, DEC));
+  String topic = String("esp12/" + Wifi::get_ip() + "/SUNLIGHT/" + String(id, DEC));
+  String message = Light_Sensor::create_dto(id, String(lum_value));
+  bool pub_res = client.publish(topic.c_str(), message.c_str());
+
+  debug.printf("Published to %s, response code %d\n", topic, pub_res);
+}
+
+void MQTT_Publisher::publish_button(int id, int button_value, String id_final) {
+
+  String topic = String("esp12/" + Wifi::get_ip() + "/BUTTON/" + id_final);
+  String message = Button::create_dto(id, String(button_value));
   bool pub_res = client.publish(topic.c_str(), message.c_str());
 
   debug.printf("Published to %s, response code %d\n", topic, pub_res);

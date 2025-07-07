@@ -4,6 +4,8 @@
 #include <Arduino.h>
 
 
+// #define MANUAL
+
 // Platform-dependent debug interface
 #if defined(ARDUINO_ARCH_AVR)
     #define debug  Serial

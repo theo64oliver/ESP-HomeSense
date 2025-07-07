@@ -8,6 +8,7 @@ namespace Button {
   void button_main();
   String register_component(int id);
   String create_dto(int id, String value);
+  String create_MQTT(int id, String value);
 }
 
 #endif /* !BUTTON_H */

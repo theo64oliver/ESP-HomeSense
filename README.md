@@ -9,6 +9,36 @@
 - Grove - Light Sensor
 - Grove - Button
 
+## We defined two use cases:
+- Manual -> Uncomment the `#define MANUAL` in `config.h`
+- Automatic -> nothing to do, the server backend will handle everything and work by itself.
+
+## How to make the project work:
+- Change all `MACROS` in `config.h` (`ip`, `backend-ip`, `wifi-ssid`, `wifi-password`...)
+- Start the backend using:
+    **For backend** (At root of homeManager):
+    - `docker build -t backend-service:latest .`
+    ___
+    **For services** (At root of sensor-service):
+    - `docker build -t component-service:latest .`
+    ___
+    **For the app** (At root of this directory):
+    - `docker compose up -d`
+- Prepare and flash the esp: 
+    - Open the `first_tests/first_tests.ino` in the `arduino ide`.
+    - In the `arduino ide`, install the required libraries in your Arduino IDE (see below).
+    - Plug the esp and flash it.
+- Configure the ihm:
+    - Go to node-red: `http://localhost:1880/`
+    - Import the `flows.json` file.
+    - Install the `node-red-dashboard` library.
+    - Go to the node `esp12/+/HUMIDITY/+` and add a MQTT broker with your ip
+    - Select that newly created server for all the `MQTT` nodes (humidity, luminosity and temperature)
+    - Change the topic of the buttons `MQTT` nodes **harcoding** the ip of the esp.
+    - Change the ip of all the `http requests` nodes.
+    - Deploy your ihm and access it
+- Enjoy your homeManager
+
 ## Work Done:
 
 For this third part, here is how the system should behave:
@@ -63,11 +93,26 @@ After this comparison, we decided to use the second library (ESP8266WebServer) f
 4. Open the Serial Monitor to see the output from the temperature and humidity sensor.
 5. Play with the sensors to see the full behaviour of the system.
 
-### Useful docs:
+## Useful docs:
 
+- Arduino ide
 - Temperature and humidity sensor: https://wiki.seeedstudio.com/GroveTemperatureAndHumidity_Sensor
 - LED : https://wiki.seeedstudio.com/Grove-Chainable_RGB_LED/
 - LCD : https://wiki.seeedstudio.com/Grove-16x2_LCD_Series
 - Luminosity sensor : please download the library available on moodle
 - PubSubClient : Available on the arduino ide library manager
-- 
+
+
+## Faced issues:
+- For the leds:
+We use the backend and microservices for the sake of the exercice. When we push a button, the backend is queries and says the led to switch on.
+This leads to extreme latency. When we push the button in automatic mode, it takes around 20 seconds to switch on/off the led.
+In real conditions, the button should directly switch on/off the led (like manual mode).
+
+- For the leds again:
+We used a very generic way of calling the endpoints. The backend always need the ip of the esp to perform actions to it. When the esp itself asks for something, it works perfectly.
+When an other device wants to control it (ex: the ihm), it should know the ip of the esp. That is not clean and doesn't reflect reality but that was the only way to do it.
+
+- For the threshold:
+It doesn't work in the ihm, the endpoint on the backend is not working properly. But all the logic is impemented and is worth looking into.
+

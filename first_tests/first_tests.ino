@@ -28,7 +28,7 @@ void setup() {
 
     LCD::lcd_setup();
     Button::button_setup();
-    Light_Sensor::setup();
+    // Light_Sensor::setup();
 
     MQTT_Publisher::setup();
 
@@ -55,7 +55,7 @@ void loop() {
 
     Button::button_main();
     HumTempSensor::hum_temp_sensor_main();
-    Light_Sensor::lum_sensor_main();
+    // Light_Sensor::lum_sensor_main();
 
     NodeMCU_Server::server_listen();
 

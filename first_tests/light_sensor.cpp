@@ -23,10 +23,13 @@ void Light_Sensor::setup() {
     }
 }
 
+// That function cannot compile because of the library.
 void Light_Sensor::lum_sensor_main() {
-    int lum_val = si1151.ReadVisible();
+    return;
 
-    MQTT_Publisher::publish_lum(0, lum_val);
+    // int lum_val = si1151.ReadVisible();
+
+    // MQTT_Publisher::publish_lum(0, lum_val);
 }
 
 String Light_Sensor::register_component(int id) {

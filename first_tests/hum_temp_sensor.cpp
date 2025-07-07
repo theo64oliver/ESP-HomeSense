@@ -77,14 +77,16 @@ void HumTempSensor::hum_temp_sensor_main() {
     // Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
 
     if (!dht_hum_temp_sensor.readTempAndHumidity(temp_hum_val)) {
-
+#ifdef MANUAL
         hum_sensor_checks(temp_hum_val[0]);
         temp_sensor_checks(temp_hum_val[1]);
         debug.printf("Temperature: %.1f °C, Humidity: %.1f %%\n", temp_hum_val[1], temp_hum_val[0]);
-    
+#else
         // Publish to MQTT broker
         MQTT_Publisher::publish_temp(0, temp_hum_val[1], Component_DTO::create_id(0, "TempSensor"));
         MQTT_Publisher::publish_hum(0, temp_hum_val[0], Component_DTO::create_id(0, "HumSensor"));
+#endif
+    
     }
     else {
         debug.println("Failed to get temprature and humidity value.");
@@ -99,10 +101,18 @@ String HumTempSensor::create_dto_temp(int id, String value) {
     return Component_DTO::create(ComponentType::e_Temperature, id, value, "TempSensor");
 }
 
+String HumTempSensor::create_MQTT_temp(int id, String value) {
+    return Component_DTO::create_MQTT_mess(ComponentType::e_Temperature, id, value, "TempSensor");
+}
+
 String HumTempSensor::register_component_hum(int id) {
     return Component_DTO::create(ComponentType::e_Humidity, id, "0", "HumSensor");
 }
 
 String HumTempSensor::create_dto_hum(int id, String value) {
-    return Component_DTO::create(ComponentType::e_Temperature, id, value, "TempSensor");
+    return Component_DTO::create(ComponentType::e_Humidity, id, value, "HumSensor");
+}
+
+String HumTempSensor::create_MQTT_hum(int id, String value) {
+    return Component_DTO::create_MQTT_mess(ComponentType::e_Humidity, id, value, "HumSensor");
 }

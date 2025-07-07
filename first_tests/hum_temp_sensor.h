@@ -13,6 +13,8 @@ namespace HumTempSensor {
   String register_component_hum(int id);
   String create_dto_temp(int id, String value);
   String create_dto_hum(int id, String value);
+  String create_MQTT_hum(int id, String value);
+  String create_MQTT_temp(int id, String value);
 }
 
 #endif /* !HUM_TEMP_SENSOR_H */
