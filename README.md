@@ -82,7 +82,7 @@ Disadvantages of the first one:
 
 Size comparison:
 ![before](./images/size_with_wifi_lib.png)
-![after](./images/size_with_web_server_lib.png)
+![after](./images/size_with_web_service_lib.png)
 
 After this comparison, we decided to use the second library (ESP8266WebServer) for the server implementation. That allowed us to create endpoints properly and have a clean implementation.
 
